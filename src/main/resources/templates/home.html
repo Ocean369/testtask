@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Test Task</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+    <div class="container">
+        <form action="/" method="post">
+            <h1>Введите сумму</h1>
+            <input type="number" id="amount" name="amount" required>
+            <button type="submit">Оплатить</button>
+        </form>
+    </div>
+</body>
+
+</html>
