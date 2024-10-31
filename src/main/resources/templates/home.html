@@ -8,10 +8,10 @@
 
 <body>
     <div class="container">
-        <form action="/" method="post">
+        <form action="/pay" th:action="@{/pay}" th:object="${payamount}" method="post">
             <h1>Введите сумму</h1>
-            <input type="number" id="amount" name="amount" required>
-            <button type="submit">Оплатить</button>
+            <input type="number" th:field="*{amount}" required min=0 step="0.01">
+            <button type="submit" value="Submit">Оплатить</button>
         </form>
     </div>
 </body>

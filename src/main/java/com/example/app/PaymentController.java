@@ -8,11 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.client.RestTemplate;
-//import org.springframework.web.servlet.view.RedirectView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -27,13 +25,13 @@ public class PaymentController {
     private static final String PAYTECH_API_URL = "https://engine-sandbox.pay.tech/api/v1/payments";
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("payamount", new PayAmount());
         return "home";
-
     }
 
-    @PostMapping("/")
-    public String makePayment(@RequestParam("amount") String amount, Model model) {
+    @PostMapping("/pay")
+    public String makePayment(@ModelAttribute PayAmount payAmount, Model model) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -41,7 +39,7 @@ public class PaymentController {
         headers.set("accept", "application/json");
         headers.set("content-type", "application/json");
 
-        String requestBody = "{\"paymentType\":\"DEPOSIT\",\"currency\":\"EUR\",\"amount\":" + amount
+        String requestBody = "{\"paymentType\":\"DEPOSIT\",\"currency\":\"EUR\",\"amount\":" + payAmount.getAmount()
                 + ",\"customer\":{\"citizenshipCountryCode\":\"AU\",\"referenceId\":\"2\"}}";
         HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
 
